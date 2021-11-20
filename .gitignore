@@ -1,0 +1,13 @@
+
+###> PhpStorm ###
+.idea/
+###< PhpStorm ###
+
+###> Composer ###
+composer.lock
+/vendor/
+###> Composer ###
+
+###> PHP cs fixer ###
+/tools/php-cs-fixer/vendor
+###> Composer ###
