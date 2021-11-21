@@ -12,22 +12,27 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Twig\Environment;
+use Twig\Error\RuntimeError;
 
 class Modeller implements ModellerInterface
 {
     private Reader $reader;
     private HttpClientInterface $client;
+    private Environment $twig;
 
     public function __construct(
         Reader              $reader,
-        HttpClientInterface $client
+        HttpClientInterface $client,
+        Environment         $twig
     ) {
         $this->reader = $reader;
         $this->client = $client;
+        $this->twig = $twig;
     }
 
     /**
-     * @param string $model
+     * @param Repo $repo
      * @return ArrayCollection|mixed
      * @throws \ReflectionException
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
@@ -36,24 +41,36 @@ class Modeller implements ModellerInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function getData(string $model, ?string $identifier = null)
+    public function getData(Repo $repo)
     {
-        $annotation = $this->getResource($model, $identifier);
-        $response = $this->client->request($annotation->method, $annotation->endpoint, $annotation->options);
+        $annotation = $this->getResource($repo->getModel(), $repo->getIdentifier());
+        $response = $this->client->request($annotation->method, self::renderEndpoint($annotation, $repo), $annotation->options);
 
-        $normalizedContent = $this->getSerializer()->decode($response->getContent(), $annotation->type);
+        $normalizedContent = self::getSerializer()->decode($response->getContent(), $annotation->type);
         $return = new ArrayCollection();
         if (array_values($normalizedContent) === $normalizedContent) {
             foreach ($normalizedContent as $normalizedItem) {
-                $return->add($this->getSerializer()->denormalize($normalizedItem, $model));
+                $return->add(self::getSerializer()->denormalize($normalizedItem, $repo->getModel()));
             }
             return $return;
         } else {
-            return $this->getSerializer()->denormalize($normalizedContent, $model);
+            return self::getSerializer()->denormalize($normalizedContent, $repo->getModel());
         }
     }
 
-    private function getSerializer()
+    private function renderEndpoint(Resource $annotation, Repo $repo): string
+    {
+        try {
+
+            $template = $this->twig->createTemplate($annotation->endpoint);
+            $rendered = $this->twig->render($template, $repo->getParameters());
+        } catch (RuntimeError $exception){
+            throw $exception->appendMessage(sprintf("Found in model %s", $annotation->));
+        }
+        return $rendered;
+    }
+
+    private static function getSerializer()
     {
         $encoders = [new XmlEncoder(), new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
@@ -63,6 +80,7 @@ class Modeller implements ModellerInterface
 
     /**
      * @param string $model
+     * @param string|null $identifier
      * @return ?Resource
      * @throws \ReflectionException
      */

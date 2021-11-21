@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 interface ModellerInterface
 {
     /**
-     * @param string $model
+     * @param Repo $repo
      * @return ArrayCollection|mixed
      * @throws \ReflectionException
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
@@ -16,5 +16,5 @@ interface ModellerInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function getData(string $model, ?string $identifier = null);
+    public function getData(Repo $repo);
 }
