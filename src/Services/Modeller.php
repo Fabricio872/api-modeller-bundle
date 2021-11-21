@@ -44,7 +44,7 @@ class Modeller implements ModellerInterface
     public function getData(Repo $repo)
     {
         $annotation = $this->getResource($repo->getModel(), $repo->getIdentifier());
-        $response = $this->client->request($annotation->method, self::renderEndpoint($annotation, $repo), $annotation->options);
+        $response = $this->client->request($annotation->method, self::renderEndpoint($annotation, $repo), array_merge_recursive($annotation->options, $repo->getOptions()));
 
         $normalizedContent = self::getSerializer()->decode($response->getContent(), $annotation->type);
         $return = new ArrayCollection();
@@ -64,8 +64,8 @@ class Modeller implements ModellerInterface
 
             $template = $this->twig->createTemplate($annotation->endpoint);
             $rendered = $this->twig->render($template, $repo->getParameters());
-        } catch (RuntimeError $exception){
-            throw $exception->appendMessage(sprintf("Found in model %s", $annotation->));
+        } catch (RuntimeError $exception) {
+            throw $exception->appendMessage(sprintf("Found in model %s", $repo->getModel()));
         }
         return $rendered;
     }
@@ -81,10 +81,10 @@ class Modeller implements ModellerInterface
     /**
      * @param string $model
      * @param string|null $identifier
-     * @return ?Resource
+     * @return Resource
      * @throws \ReflectionException
      */
-    private function getResource(string $model, ?string $identifier): ?Resource
+    private function getResource(string $model, ?string $identifier): Resource
     {
         $reflection = new \ReflectionClass($model);
 

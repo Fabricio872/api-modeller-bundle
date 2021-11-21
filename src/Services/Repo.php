@@ -7,6 +7,7 @@ class Repo
     private string $model;
     private ?string $identifier = '';
     private array $parameters = [];
+    private array $options = [];
 
     public function __construct(
         string $model
@@ -47,6 +48,7 @@ class Repo
     }
 
     /**
+     * Parameters documentation
      * @return array|null
      */
     public function getParameters(): ?array
@@ -61,6 +63,24 @@ class Repo
     public function setParameters(?array $parameters): Repo
     {
         $this->parameters = $parameters;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param array $options
+     * @return Repo
+     */
+    public function setOptions(array $options): Repo
+    {
+        $this->options = $options;
         return $this;
     }
 }
