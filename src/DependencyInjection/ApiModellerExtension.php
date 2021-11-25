@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fabricio872\ApiModeller\DependencyInjection;
 
-use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ApiModellerExtension extends Extension
 {

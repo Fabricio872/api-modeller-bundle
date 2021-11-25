@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fabricio872\ApiModeller\Annotations;
 
 use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
@@ -13,6 +15,7 @@ final class Resource implements ResourceInterface
 {
     /**
      * URL to exact endpoint for the model to receive data from
+     *
      * @var string
      */
     public $endpoint;
@@ -31,16 +34,17 @@ final class Resource implements ResourceInterface
 
     /**
      * Option described on
+     *
      * @Ar
      * @var array
      */
     public $options;
 
     public function __construct(
-        string  $endpoint = "",
-        ?string $type = "json",
-        ?string $method = "GET",
-        ?array  $options = []
+        string $endpoint = '',
+        ?string $type = 'json',
+        ?string $method = 'GET',
+        ?array $options = []
     ) {
         $this->endpoint = $endpoint;
         $this->type = $type;

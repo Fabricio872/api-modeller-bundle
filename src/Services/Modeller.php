@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fabricio872\ApiModeller\Services;
 
 use Doctrine\Common\Annotations\Reader;
@@ -18,33 +20,28 @@ use Twig\Error\RuntimeError;
 class Modeller implements ModellerInterface
 {
     private Reader $reader;
+
     private HttpClientInterface $client;
+
     private Environment $twig;
 
-    public function __construct(
-        Reader              $reader,
-        HttpClientInterface $client,
-        Environment         $twig
-    ) {
+    public function __construct(Reader $reader, HttpClientInterface $client, Environment $twig) {
         $this->reader = $reader;
         $this->client = $client;
         $this->twig = $twig;
     }
 
     /**
-     * @param Repo $repo
      * @return ArrayCollection|mixed
-     * @throws \ReflectionException
-     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
     public function getData(Repo $repo)
     {
         $annotation = $this->getResource($repo->getModel(), $repo->getIdentifier());
-        $response = $this->client->request($annotation->method, self::renderEndpoint($annotation, $repo), array_merge_recursive($annotation->options, $repo->getOptions()));
+        $response = $this->client->request(
+            $annotation->method,
+            self::renderEndpoint($annotation, $repo),
+            array_merge_recursive($annotation->options, $repo->getOptions())
+        );
 
         $normalizedContent = self::getSerializer()->decode($response->getContent(), $annotation->type);
         $return = new ArrayCollection();
@@ -53,19 +50,17 @@ class Modeller implements ModellerInterface
                 $return->add(self::getSerializer()->denormalize($normalizedItem, $repo->getModel()));
             }
             return $return;
-        } else {
-            return self::getSerializer()->denormalize($normalizedContent, $repo->getModel());
         }
+        return self::getSerializer()->denormalize($normalizedContent, $repo->getModel());
     }
 
     private function renderEndpoint(Resource $annotation, Repo $repo): string
     {
         try {
-
             $template = $this->twig->createTemplate($annotation->endpoint);
             $rendered = $this->twig->render($template, $repo->getParameters());
         } catch (RuntimeError $exception) {
-            throw $exception->appendMessage(sprintf("Found in model %s", $repo->getModel()));
+            throw $exception->appendMessage(sprintf('Found in model %s', $repo->getModel()));
         }
         return $rendered;
     }
@@ -78,19 +73,14 @@ class Modeller implements ModellerInterface
         return new Serializer($normalizers, $encoders);
     }
 
-    /**
-     * @param string $model
-     * @param string|null $identifier
-     * @return Resource
-     * @throws \ReflectionException
-     */
+
     private function getResource(string $model, ?string $identifier): Resource
     {
         $reflection = new \ReflectionClass($model);
 
         $resourceInterface = $this->reader->getClassAnnotation($reflection, ResourceInterface::class);
         if ($resourceInterface instanceof Resources) {
-            if (!array_key_exists($identifier, $resourceInterface->resources)) {
+            if (! array_key_exists($identifier, $resourceInterface->resources)) {
                 throw new \Exception(sprintf('Identifier: "%s" does not exists in Model: "%s"', $identifier, $model));
             }
             return $resourceInterface->resources[$identifier];

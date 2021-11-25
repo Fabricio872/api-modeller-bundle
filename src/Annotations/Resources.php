@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fabricio872\ApiModeller\Annotations;
 
 use Doctrine\Common\Annotations\Annotation\Attribute;
@@ -17,12 +19,8 @@ final class Resources implements ResourceInterface
 {
     public array $resources;
 
-    /**
-     * @param array $resources
-     */
-    public function __construct(
-        array $resources = []
-    ) {
+
+    public function __construct(array $resources = []) {
         $this->resources = $resources;
     }
 }

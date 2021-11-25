@@ -37,6 +37,6 @@
         }
     ],
     "scripts": {
-        "test-psr": "vendor/bin/ecs check src"
-    }
+        "test-psr": "vendor/bin/ecs check src",
+        "fix-psr": "vendor/bin/ecs check src --fix"    }
 }
