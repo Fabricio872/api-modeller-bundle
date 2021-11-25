@@ -16,6 +16,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Twig\Environment;
 use Twig\Error\RuntimeError;
+use Twig\Source;
 
 class Modeller implements ModellerInterface
 {
@@ -25,7 +26,8 @@ class Modeller implements ModellerInterface
 
     private Environment $twig;
 
-    public function __construct(Reader $reader, HttpClientInterface $client, Environment $twig) {
+    public function __construct(Reader $reader, HttpClientInterface $client, Environment $twig)
+    {
         $this->reader = $reader;
         $this->client = $client;
         $this->twig = $twig;
@@ -60,7 +62,8 @@ class Modeller implements ModellerInterface
             $template = $this->twig->createTemplate($annotation->endpoint);
             $rendered = $this->twig->render($template, $repo->getParameters());
         } catch (RuntimeError $exception) {
-            throw $exception->appendMessage(sprintf('Found in model %s', $repo->getModel()));
+            $exception->setSourceContext(new Source('', $repo->getModel()));
+            throw $exception;
         }
         return $rendered;
     }
@@ -72,7 +75,6 @@ class Modeller implements ModellerInterface
 
         return new Serializer($normalizers, $encoders);
     }
-
 
     private function getResource(string $model, ?string $identifier): Resource
     {
