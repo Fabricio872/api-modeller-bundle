@@ -19,8 +19,8 @@ final class Resources implements ResourceInterface
 {
     public array $resources;
 
-
-    public function __construct(array $resources = []) {
+    public function __construct(array $resources = [])
+    {
         $this->resources = $resources;
     }
 }

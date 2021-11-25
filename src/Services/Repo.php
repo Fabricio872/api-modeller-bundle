@@ -14,7 +14,8 @@ class Repo
 
     private array $options = [];
 
-    public function __construct(string $model) {
+    public function __construct(string $model)
+    {
         $this->model = $model;
     }
 
@@ -23,18 +24,15 @@ class Repo
         return new self($model);
     }
 
-
     public function getModel(): string
     {
         return $this->model;
     }
 
-
     public function getIdentifier(): ?string
     {
         return $this->identifier;
     }
-
 
     public function setIdentifier(?string $identifier): self
     {
@@ -50,19 +48,16 @@ class Repo
         return $this->parameters;
     }
 
-
     public function setParameters(?array $parameters): self
     {
         $this->parameters = $parameters;
         return $this;
     }
 
-
     public function getOptions(): array
     {
         return $this->options;
     }
-
 
     public function setOptions(array $options): self
     {

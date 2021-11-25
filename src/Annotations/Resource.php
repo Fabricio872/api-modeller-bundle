@@ -27,7 +27,7 @@ final class Resource implements ResourceInterface
     public $type;
 
     /**
-     * @Enum({"GET", "POST"})
+     * @Enum({"GET", "POST", "PUT", "PATCH", "DELETE"})
      * @var string
      */
     public $method;
