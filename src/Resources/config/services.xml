@@ -5,23 +5,24 @@
         https://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <defaults autowire="true" autoconfigure="true"/>
-
         <!-- Explicitly configure the service -->
 
-<!--        <service id="fabricio872.api_modeller.services.modeller" class="Fabricio872\ApiModeller\Services\Modeller"-->
-<!--                 public="true" autowire="true"/>-->
-        <service id="Fabricio872\ApiModeller\Services\Modeller"
-                 public="false" autowire="true"/>
+        <service id="fabricio872.api_modeller.modeller" class="Fabricio872\ApiModeller\Modeller" public="true">
+            <argument type="service" id="Doctrine\Common\Annotations\Reader"/>
+            <argument type="service" id="Fabricio872\ApiModeller\ClientAdapter\Symfony"/>
+            <argument type="service" id="Twig\Environment"/>
+        </service>
+        <service id="Fabricio872\ApiModeller\Modeller" alias="fabricio872.api_modeller.modeller" public="false"/>
 
-        <service id="fabricio872.api_modeller.annotations.resource" class="Fabricio872\ApiModeller\Annotations\Resource"
-                 public="true"/>
-        <service id="Fabricio872\ApiModeller\Annotations\Resource" class="fabricio872.api_modeller.annotations.resource"
-                 public="false"/>
+        <service id="fabricio872.api_modeller.client_adapter.symfony" class="Fabricio872\ApiModeller\ClientAdapter\Symfony" public="true">
+            <argument type="service" id="Symfony\Contracts\HttpClient\HttpClientInterface"/>
+        </service>
+        <service id="Fabricio872\ApiModeller\ClientAdapter\Symfony" alias="fabricio872.api_modeller.client_adapter.symfony" public="false"/>
 
-        <service id="fabricio872.api_modeller.annotations.resources" class="Fabricio872\ApiModeller\Annotations\Resources"
-                 public="true"/>
-        <service id="Fabricio872\ApiModeller\Annotations\Resources" class="fabricio872.api_modeller.annotations.resources"
-                 public="false"/>
+        <service id="fabricio872.api_modeller.annotations.resource" class="Fabricio872\ApiModeller\Annotations\Resource" public="true"/>
+        <service id="Fabricio872\ApiModeller\Annotations\Resource" alias="fabricio872.api_modeller.annotations.resource" public="false"/>
+
+        <service id="fabricio872.api_modeller.annotations.resources" class="Fabricio872\ApiModeller\Annotations\Resources" public="true"/>
+        <service id="Fabricio872\ApiModeller\Annotations\Resources" alias="fabricio872.api_modeller.annotations.resources" public="false"/>
     </services>
 </container>
