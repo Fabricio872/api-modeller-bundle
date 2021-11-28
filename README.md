@@ -54,7 +54,7 @@ return [
 # Usage
 > This bundle uses models with Annotations similar to Doctrine Entities.
 >
-> Usually they are in a directory src/ApiModels but they are not required to be there as long as they have correct namespace
+> Usually they are in a directory `src/ApiModels` but they are not required to be there as long as they have correct namespace
 
 ## Example model with single Resource
 
@@ -89,17 +89,17 @@ class Users
 
 > endpoint parameter is endpoint which will be called.
 >
-> The variable {{api_url}} is Twig global variable configured in twig config (example in [Global variables configuration](#global-variables-configuration) section)
+> The variable `{{api_url}}` is Twig global variable configured in twig config (example in [Global variables configuration](#global-variables-configuration) section)
 
 > method parameter is method with which the request will be done 
 > 
-> default: "GET"
+> default: `GET`
 
 > type parameter defines format of the received data 
 > 
-> currently supported: "json", "xml'
+> currently supported: `json`, `"xml'`
 > 
-> default: "json"
+> default: `json`
 
 > options parameter is array that is directly passed (but can be altered as explained in [setOptions](#setoptions) section) 
 > to [symfony/http-client](https://github.com/symfony/http-client) request method as 3. parameter so use [this documentation](https://symfony.com/doc/current/http_client.html) 
@@ -164,8 +164,9 @@ twig:
 
 > This bundle can be initialized from symphony's dependency container so in your controller you can call it like this:
 
+### Calling with single resource
 This controller dumps model or collection of models form [this example](#example-model-with-single-resource) with namespace Users::class
-and sets query parameter 'page' to 2
+and sets query parameter `page` to 2
 ```php
 // src/Controller/SomeController.php
 
@@ -190,8 +191,9 @@ and sets query parameter 'page' to 2
     }
 ```
 
-This controller dumps model or collection of models form [this example](#example-model-with-multiple-resources) with namespace Users::class
-and fills the {{id}} variable from model with number 2
+### Calling with multiple resources
+This controller dumps model or collection of models form [this example](#example-model-with-multiple-resources) with namespace `Users::class`
+and fills the `{{id}}` variable from model with number 2
 
 noticed that now method setIdentifier is required
 ```php
@@ -219,9 +221,9 @@ noticed that now method setIdentifier is required
 
 > The modeller accepts Repo object which requires namespace of model you want to build
 > and has optional setters:
-> - setOptions()
-> - setParameters()
-> - setIdentifier()
+> - `setOptions()`
+> - `setParameters()`
+> - `setIdentifier()`
 
 ### setOptions
 This method accepts array of options that will be merged with options configured in a model (and will override overlapped parameters) 
@@ -232,5 +234,5 @@ This method accepts array and sets twig variables (same as if you render a templ
 from model) to url configuration and can override global twig variables
 
 ### setIdentifier
-This method is required in case when you use multiple Resources for single model as shown in [this example]()
+This method is required in case when you use multiple Resources for single model as shown in [this example](#example-model-with-multiple-resources)
 
