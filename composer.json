@@ -1,5 +1,5 @@
 {
-    "name": "fabricio872/api-modeller",
+    "name": "fabricio872/api-modeller-bundle",
     "description": "Symfony bundle for translating foreign API to Doctrine-like models",
     "type": "symfony-bundle",
     "keywords": ["library", "symfony", "symfony-bundle", "api", "model"],
@@ -12,13 +12,9 @@
     },
     "require": {
         "php": "^7.4|^8.0",
-        "doctrine/annotations": "^1.13",
+        "fabricio872/api-modeller": "^2.0",
         "symfony/config": "^4.4|^5",
-        "symfony/dependency-injection": "^4.4|^5",
-        "symfony/http-client": "^4.4|^5",
-        "symfony/http-kernel": "^4.4|^5",
-        "symfony/serializer": "^4.4|^5",
-        "twig/twig": "^3.3"
+        "symfony/dependency-injection": "^4.4|^5"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^4.4|^5",
@@ -27,7 +23,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Fabricio872\\ApiModeller\\": "src/"
+            "Fabricio872\\ApiModellerBundle\\": "src/"
         }
     },
     "authors": [
@@ -38,5 +34,6 @@
     ],
     "scripts": {
         "test-psr": "vendor/bin/ecs check src",
-        "fix-psr": "vendor/bin/ecs check src --fix"    }
+        "fix-psr": "vendor/bin/ecs check src --fix"
+    }
 }
