@@ -14,7 +14,8 @@
         "php": "^7.4|^8.0",
         "fabricio872/api-modeller": "^2.0",
         "symfony/config": "^4.4|^5",
-        "symfony/dependency-injection": "^4.4|^5"
+        "symfony/dependency-injection": "^4.4|^5",
+        "symfony/serializer-pack": "^1.0"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^4.4|^5",
