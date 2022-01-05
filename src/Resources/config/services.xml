@@ -16,7 +16,7 @@
         <service id="Fabricio872\ApiModeller\Modeller" alias="fabricio872.api_modeller.modeller" public="false"/>
 
         <service id="fabricio872.api_modeller.client_adapter.client_interface"
-                 class="Fabricio872\ApiModeller\ClientAdapter\Symfony" public="true">
+                 class="Fabricio872\ApiModellerBundle\HttpClientAdapter" public="true">
             <argument type="service" id="Symfony\Contracts\HttpClient\HttpClientInterface"/>
         </service>
         <service id="Fabricio872\ApiModeller\ClientAdapter\ClientInterface"
