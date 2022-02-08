@@ -11,7 +11,6 @@
             <argument type="service" id="Doctrine\Common\Annotations\Reader"/>
             <argument type="service" id="Fabricio872\ApiModeller\ClientAdapter\ClientInterface"/>
             <argument type="service" id="Twig\Environment"/>
-            <argument type="service" id="Symfony\Component\Serializer\SerializerInterface"/>
         </service>
         <service id="Fabricio872\ApiModeller\Modeller" alias="fabricio872.api_modeller.modeller" public="false"/>
 
